@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>[PixelRun]</title>
+    <style>
+  body {background-image:url(https://openclipart.org/image/2400px/svg_to_png/265451/Sand.png);}
+      #myCanvas {padding-left: 0; padding-right: 0; margin: auto; display: block; /*position: absolute;*/
+                background-color: none; border: solid 5px black; top: 0; bottom: 0; left: 0; right: 0;
+                box-shadow: 0px 0px 24px black;}
+      .selector {padding-left: 0; padding-right: 0; margin: auto; display: block; /*position: absolute;*/
+                    background: linear-gradient(to bottom, #ffffff 0%, gray 100%);/*#331f00*/; border: solid 5px black;
+                    top: 0; bottom: 0; left: 0; right: 0; box-shadow: 0px 0px 24px black; overflow-x: scroll;
+                    overflow-y: hidden; width: 800px;}
+      .hatContainer {width: 1820px;}
+      .mapContainer {width: 960px;}
+      #controls{float: left; width: 200px; height: 250px; box-shadow: 0px 0px 24px black; background-color: white;
+      border: solid 5px black; position: fixed;}
+      .hidden {background-color: none; height: 10px;}
+      ul {list-style-type: none; margin: 0; padding: 0; overflow: hidden;}
+      li {float: left; color: white;}
+      .hats{width: 120px; height: 120px; display: inline-block; margin-top: -10px;}
+      .hats:hover{width: 135; height: 135px; margin-top: -15px;}
+      .maps{width: 300px; height: 120px; padding: 10px;}
+      .maps:hover{opacity: 0.8}
+      #model{position: absolute; }
+      p{margin: auto; font-family: Arial; font-weight: bold; text-align: center; padding: 5px; color: black;}
+      #mapSelector{height: 200px;}
+      #hatSelector{height: 160px;}
+
+    </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+
+  <div class="hidden" style="height: 100px"></div>
+
+  <div id="controls">
+    <p>CONTROLS: <br><br> W OR UP = JUMP <br><br> P = PAUSE <br><br> ENTER = PLAY <br><br> CLICK ON HATS TO <br><br>
+      WEAR THEM <br><br> R = REMOVE HAT</p>
+  </div>
+
+  <canvas id="myCanvas" width="800px" height="400px"></canvas>
+
+      <div class="hidden"></div>
+
+    <div class="selector" id="hatSelector">
+      <div class="hatContainer">
+        <ul>
+          <li><a><p>RICE HAT<br>UNLOCK AT<br> 1000 SCORE</p><img id="rice" class="hats" src="https://image.ibb.co/j1CTyv/Riceman.png";></a></li>
+          <li><a><p>BANDANA<br>UNLOCK AT<br> 2000 SCORE</p><img id="bandana" class="hats" src="http://image.ibb.co/eANOyv/Bandana.png";></a></li>
+          <li><a><p>PILGRIM HAT<br>UNLOCK AT<br> 3000 SCORE</p><img id="pilgrim" class="hats" src="https://image.ibb.co/n2ADyv/Pilgrim.png";></a></li>
+          <li><a><p>WIG<br>UNLOCK AT<br> 4000 SCORE</p><img id="wig" class="hats" src="https://image.ibb.co/dSu1ka/Wig.png";></a></li>
+          <li><a><p>WIZARD HAT<br>UNLOCK AT<br> 5000 SCORE</p><img id="wizard" class="hats" src="https://image.ibb.co/bUz0va/Wizard.png";></a></li>
+          <li><a><p>BLACK HAIR<br>UNLOCK AT<br> 6000 SCORE</p><img id="blackHair" class="hats" src="https://image.ibb.co/hLX45a/Hats.png";></a></li>
+          <li><a><p>PINK HAIR<br>UNLOCK AT<br> 7000 SCORE</p><img id="pinkHair" class="hats" src="http://image.ibb.co/ijVbJv/PinkHair.png";></a></li>
+          <li><a><p>TOP HAT<br>UNLOCK AT<br> 8000 SCORE</p><img id="topHat" class="hats" src="https://image.ibb.co/nyc45a/TopHat.png";></a></li>
+          <li><a><p>BLACK HOLE<br>UNLOCK AT<br> 9000 SCORE</p><img id="blackHole" class="hats" src="http://image.ibb.co/eMFAdv/Blackhole.png";></a></li>
+          <li><a><p>AURA<br>UNLOCK AT<br> 10000 SCORE </p><img id="aura" class="hats" src="http://image.ibb.co/gJ0nQa/Harmony.png";></a></li>
+          <li><a><p>GOLD NUGGET<br>UNLOCK AT<br> 11000 SCORE</p><img id="goldNugget" class="hats" src="http://image.ibb.co/mwOVdv/Golden_Nugget.png";></a></li>
+          <li><a><p>LAZER EYES<br>UNLOCK AT<br> 12000 SCORE</p><img id="lazer" class="hats" src="http://image.ibb.co/k6OVdv/Lazer_Eyes.png";></a></li>
+          <li><a><p>TREE HAT<br>UNLOCK AT<br> 13000 SCORE</p><img id="tree" class="hats" src="https://image.ibb.co/mHPKMF/IAmGroot.png";></a></li>
+          <li><a><p>UNREAL HAT<br>UNLOCK AT<br> 14000 SCORE</p><img id="unreal" class="hats" src="http://image.ibb.co/b7C6Jv/Unreal.png";></a></li>
+          <li><a><p>CROWN<br>UNLOCK AT<br> 15000 SCORE</p><img id="crown" class="hats" src="http://image.ibb.co/hFH0Tv/Crown.png";></a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hidden"></div>
+
+    <div class="selector" id="mapSelector">
+      <div class="mapContainer">
+        <ul>
+          <li><a><p>MAP 1<br>UNLOCKED BY DEFAULT</p><img id="map1" class="maps" src="https://image.ibb.co/e99FVa/MAP_1_THUMB.png";></a></li>
+          <li><a><p>MAP 2<br>UNLOCK AT 5000 SCORE</p><img id="map2" class="maps" src="https://image.ibb.co/jL7fwF/MAP_2_THUMB.png";></a></li>
+          <li><a><p>MAP 3<br>UNLOCK AT 10000 SCORE</p><img id="map3" class="maps" src="https://image.ibb.co/i7AVVa/MAP_3_THUMB.png";;></a></li>
+        </ul>
+      </div>
+    </div>
+
+<script>
+  //SPECIAL THANKS TO IMGBB.COM FOR HOSTING ALL IMAGES
+
+  //GENERAL VARIABLES
+    var canvas;
+    var ctx;
+    const canvasHeight = 400;
+    const canvasWidth = 800;
+  //FRAMES PER SECOND
+    var FPS = 30;
+  //THE PLAYER'S PREDEFINED VALUES
+    var playerHeight = 100;
+    var playerWidth = 60;
+    var playerPosX = canvasWidth / 4;
+    var playerPosY = canvasHeight - playerHeight;
+    var playerScore = 0;
+    var highscore = 0;
+    var deaths = 0;
+    var died = false;
+  //SPEED OF THE CANVAS
+    var backgroundSpeed = 10;
+    var paused = false;
+    var start = true;
+    var mapChanged = false;
+    var backgroundX = 0;
+  //SELECTORS
+    var hatsSelected = {
+        riceHat: false,
+        wizardHat: false,
+        treeHat: false,
+        crown: false,
+        lazer: false,
+        bandana: false,
+        aura: false,
+        unrealHat: false,
+        pinkHair: false,
+        blackHole: false,
+        goldNugget: false,
+        blackHair: false,
+        pilgrim: false,
+        topHat: false,
+        wig: false
+    };
+    var mapSelected = {
+      map1: false,
+      map2: false,
+      map3: false
+    }
+  //ALL IMAGE VARIABLES
+    var spriteImg = new Image();
+    spriteImg.src = "https://image.ibb.co/n8PHaa/Run_Sprite2.png";
+    var backgroundImg = new Image();
+    backgroundImg.src = "https://image.ibb.co/mEKbLa/BACKGROUND_NEW_2.png"; //"https://image.ibb.co/gGgP5a/Background_FINAL.png"
+    var map1 = new Image();
+    map1.src = "https://image.ibb.co/gGgP5a/Background_FINAL.png";
+    var map2 = new Image();
+    map2.src = "https://image.ibb.co/cDam3v/MAP_2.png";
+    var map2Bridge = new Image();
+    map2Bridge.src = "https://image.ibb.co/bJz7Aa/BRIDGE_MAP_2.png";
+    var map3 = new Image();
+    map3.src = "https://image.ibb.co/jdyjqa/MAP_3.png";
+    var ObstaclesImg = new Image();
+    ObstaclesImg.src = "https://image.ibb.co/cubr1F/tnt.png";
+    var gameTitle = new Image();
+    gameTitle.src = "http://image.ibb.co/fcTrka/Nevin_IDid_It_My_Self_Seriously_Like_Im_Not_Even_Kidding_IMade_The_Whole_Thing_Myself.png";
+    var speedImg = new Image();
+    speedImg.src = "https://image.ibb.co/f0kwka/Speedy.png";
+  //HAT VARIABLES
+      var riceHatImg = document.getElementById("rice");
+      var wizardHatImg = document.getElementById("wizard");
+      var treeHatImg = document.getElementById("tree");
+      var crownHatImg = document.getElementById("crown");
+      var bandanaHatImg = document.getElementById("bandana");
+      var blackholeHatImg = document.getElementById("blackHole");
+      var goldennuggetHatImg = document.getElementById("goldNugget");
+      var harmonyHatImg = document.getElementById("aura");
+      var lazerHatImg = document.getElementById("lazer");
+      var pinkhairHatImg = document.getElementById("pinkHair");
+      var unrealHatImg = document.getElementById("unreal");
+      var blackHairImg = document.getElementById("blackHair");
+      var pilgrimHatImg = document.getElementById("pilgrim");
+      var topHatImg = document.getElementById("topHat");
+      var wigImg = document.getElementById("wig");
+
+  window.onload = function(){
+    canvas = document.getElementById("myCanvas");
+    ctx = canvas.getContext("2d");
+    setInterval(draw, 1000 / FPS);
+    };
+
+    //RANDOM INTEGER FUNCTION COURTESY OF STACKOVERFLOW.COM
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+
+    //THESE ANIMATION COUNTERS CONTROL THE SPRITE AND THE HATS
+    var runAnimationCounter = 0;
+    var hatAnimationCounter = 0;
+
+    //THE PLAYER OBJECT CREATOR
+    var Player = function(x, y, sizeX, sizeY) {
+      this.x = x;
+      this.y = y;
+      this.sizeX = sizeX;
+      this.sizeY = sizeY;
+      this.gravity = 5;
+      this.velocity = 0;
+      //UPDATES PLAYER FOR MOVEMENT
+      this.update = function(){
+        this.velocity += this.gravity;
+        this.y += this.velocity;
+          runAnimationCounter += backgroundSpeed * 0.02;
+          hatAnimationCounter += backgroundSpeed * 0.02;
+            if(this.y > playerPosY){
+              this.velocity = 0;
+              this.y = playerPosY;
+            } else if(this.y < 0){
+              this.velocity = 0;
+              this.y = 0;
+            }
+          }
+      //SHOWS THE PLAYER
+      this.show = function(){
+        var runAnimation = Math.floor(runAnimationCounter % 4);
+        var spriteFrameWidth = spriteImg.width / 4;
+        var hatAnimation = Math.floor(hatAnimationCounter % 2);
+        //DRAWS PLAYER
+        ctx.drawImage(spriteImg, runAnimation * spriteFrameWidth, 0, spriteFrameWidth, spriteImg.height, this.x, this.y, this.sizeX, this.sizeY);
+        //DRAWS SELECTED HATS
+            if(hatsSelected[0] && highscore >= 1000){
+              ctx.drawImage(riceHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[1] && highscore >= 5000){
+              ctx.drawImage(wizardHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[2] && highscore >= 13000){
+              ctx.drawImage(treeHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[3] && highscore >= 15000){
+              ctx.drawImage(crownHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[4] && highscore >= 12000){
+              ctx.drawImage(lazerHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x - (18 * runAnimation), this.y - (5 * hatAnimation), this.sizeX + (40 * runAnimation), this.sizeY);
+          } else if(hatsSelected[5] && highscore >= 10000){
+              ctx.drawImage(harmonyHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x - (5 * hatAnimation),  this.y - (5 * hatAnimation), this.sizeX + (10 * hatAnimation), this.sizeY + 20 + (10 * hatAnimation));
+          } else if(hatsSelected[6] && highscore >= 2000){
+              ctx.drawImage(bandanaHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[7] && highscore >= 14000){
+              ctx.drawImage(unrealHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[8] && highscore >= 7000){
+              ctx.drawImage(pinkhairHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[9] && highscore >= 9000){
+              ctx.drawImage(blackholeHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x - (25 * hatAnimation), this.y - (25 * hatAnimation) + 5, this.sizeX + (50 * hatAnimation), this.sizeY + (50 * hatAnimation));
+          } else if(hatsSelected[10] && highscore >= 11000){
+              ctx.drawImage(goldennuggetHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[11] && highscore >= 6000){
+              ctx.drawImage(blackHairImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[12] && highscore >= 3000){
+              ctx.drawImage(pilgrimHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[13] && highscore >= 8000){
+              ctx.drawImage(topHatImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          } else if(hatsSelected[14] && highscore >= 4000){
+              ctx.drawImage(wigImg, 0, 0, spriteFrameWidth, spriteImg.height, this.x, this.y - (5 * hatAnimation), this.sizeX, this.sizeY);
+          }
+        };
+
+        //SELECTING HATS
+          $(document).ready(function(){
+            $("#rice").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[0] = true;
+              })
+            $("#wizard").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[1] = true;
+              })
+            $("#tree").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[2] = true;
+              })
+            $("#crown").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[3] = true;
+              })
+            $("#lazer").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[4] = true;
+              })
+            $("#aura").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[5] = true;
+              })
+            $("#bandana").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[6] = true;
+              })
+            $("#unreal").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[7] = true;
+              })
+            $("#pinkHair").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[8] = true;
+              })
+            $("#blackHole").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[9] = true;
+              })
+            $("#goldNugget").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[10] = true;
+              })
+            $("#blackHair").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[11] = true;
+              })
+            $("#pilgrim").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[12] = true;
+              })
+            $("#topHat").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[13] = true;
+              })
+            $("#wig").click(function(){
+              for(var key in hatsSelected){hatsSelected[key] =  false;}
+              hatsSelected[14] = true;
+              })
+            })
+          }
+
+    //THE OBSTACLES OBJECT
+    var Obstacles = function(x, y, sizeX, sizeY) {
+      this.x = x;
+      this.y = y;
+      this.sizeX = sizeX;
+      this.sizeY = sizeY;
+      this.show = function(){
+        ctx.drawImage(ObstaclesImg, this.x, this.y, this.sizeX, this.sizeY);
+      };
+      this.update = function(){
+        this.x -= backgroundSpeed * 2;
+      }
+    }
+
+    //THE BACKGROUND TREATED AS AN OBJECT
+    var Background = function(x, y){
+      this.x = x;
+      this.y = y;
+      this.show = function(){
+        if(!start && !mapSelected[1] && !mapSelected[2]){
+          ctx.drawImage(map1, this.x, this.y, canvasWidth * 4, canvasHeight);
+        }
+        if(mapSelected[0]){
+          ctx.drawImage(map1, this.x, this.y, canvasWidth * 4, canvasHeight);
+        } else if(mapSelected[1]){
+          ctx.drawImage(map2, this.x, this.y, canvasWidth * 4.5, canvasHeight);
+        } else if(mapSelected[2]){
+          ctx.drawImage(map3, this.x, this.y, canvasWidth * 4.5, canvasHeight);
+        }
+        //GAME TITLE
+        //ctx.drawImage(gameTitle, 0, 0, gameTitle.width, gameTitle.height, this.x + canvasWidth, this.y + 40, 300, 155);
+      };
+      this.update = function(){
+        this.x -= backgroundSpeed;
+          if(this.x < -(canvasWidth * 3)){
+            this.x = 0;
+          }
+        }
+        //SELECTING MAPS
+        $(document).ready(function(){
+          $("#map1").click(function(){
+            if(highscore >= 0){
+            for(var key in mapSelected){mapSelected[key] = false;}
+            mapSelected[0] = true;
+            console.log("map1 selected.")}
+          })
+          $("#map2").click(function(){
+            if(highscore >= 5000){
+            for(var key in mapSelected){mapSelected[key] = false;}
+            mapSelected[1] = true;
+            console.log("map2 selected.")}
+          })
+          $("#map3").click(function(){
+            if(highscore >= 10000){
+            for(var key in mapSelected){mapSelected[key] = false;}
+            mapSelected[2] = true;
+            console.log("map3 selected.")}
+          })
+        })
+      }
+      //DRAW BRIDGE FOR MAP 2
+      var bridgeObject = function(x, y){
+        this.x = x;
+        this.y = y;
+        this.show = function(){
+          ctx.drawImage(map2Bridge, this.x, this.y, canvasWidth * 4.5, canvasHeight);
+        }
+        this.update = function(){
+          this.x -= backgroundSpeed;
+            if(this.x < -(canvasWidth * 3)){
+
+              this.x = 0;
+            }
+          }
+        }
+
+    //THE PLAYER
+    var player = new Player(playerPosX, playerPosY, playerWidth, playerHeight);
+
+    //THE OBSTACLES
+    var obstacles = new Obstacles(canvasWidth + 200, 354, 40, 40);
+
+    //DRAWS BACKGROUND
+    var background = new Background(0, 0);
+
+    //BRIDGE
+    var bridgeMap2 = new bridgeObject(0, 0);
+
+    var counter = 1;
+
+    //CHECKS TO SEE IF PLAYER COMES IN CONTACT WITH OBJECT
+    function checkCollisions(){
+      if((obstacles.x < player.x + player.sizeX / 1.75) && (obstacles.x > player.x - player.sizeX / 1.75)
+        && (player.y + playerHeight * 0.8 > obstacles.y)){
+          console.log("COLLISION");
+          backgroundSpeed = 10;
+          counter = 1;
+          died = !died;
+          player.y = 1300;
+          //BRIEFLY REMOVES PLAYER FROM CANVAS
+            if(player.y > 1200){
+              deaths++;
+              player.y = 0;
+              obstacles.x = canvasWidth + getRandomInt(0, canvasWidth);
+              }
+            }
+          }
+
+    //ADD SCORE FUNCTION
+    function addScore(){
+    if((player.x > obstacles.x + obstacles.sizeX) && (obstacles.x <= -41)){
+        playerScore += 100;
+        //HIGHSCORE
+        if(playerScore >= highscore){
+          highscore = playerScore;
+            }
+          } if(obstacles.x < -(40)){
+             if(playerScore % (300 || 700) === 0 ){
+               obstacles.x = getRandomInt(canvasWidth, canvasWidth + 100)
+             } else{
+               obstacles.x = getRandomInt(canvasWidth + 100, 2 * canvasWidth);
+              }
+            }
+          }
+
+    //THIS INCREASES DIFFICULTY BY SPEEDING UP THE BACKGROUND
+      function difficulty(){
+          if(playerScore / 1000 === counter){
+            backgroundSpeed++;
+            counter++;
+            }
+          }
+
+    //MOVE FUNCTION
+    function controls(e){
+        //UP == 38 & W == 87
+      if(e.keyCode == 38 || e.keyCode == 87){
+        if(player.y === playerPosY){
+          player.velocity -= 40;
+        };
+      } if(e.keyCode == 80 && start === false && died === false){
+        //P == 80
+        paused = !paused;
+      } if(e.keyCode == 13){
+        //ENTER == 13
+        start = false;
+        if(died){
+          died = !died;
+          playerScore = 0;
+        }
+      } if(e.keyCode == 82){
+        //R == 82
+        for(var key in hatsSelected){hatsSelected[key] =  false;}
+      }
+    };
+
+    //THESE ARE THE CONTROLs
+    document.onkeydown = controls;
+
+    //DRAWS BACKGROUND
+    function drawBackground(){
+        background.show();
+        background.update();
+    };
+
+    //DRAWS PLAYER
+    function drawPlayer(){
+        player.show();
+        player.update();
+    };
+
+    //DRAWS OBSTACLES
+    function drawObstacles(){
+        obstacles.show();
+        obstacles.update();
+    };
+
+
+
+    //DRAWS SCOREBOARD
+    var scoreboard = function(){
+        //ctx.textAlign = "none";
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvasWidth, 65);
+        ctx.fillStyle = "white";
+        ctx.fillRect(265, 0, 270, 60);
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, 260, 60);
+        ctx.fillStyle = "white";
+        ctx.fillRect(canvasWidth - 260, 0, 260, 60);
+        ctx.fillStyle = 'black';
+        ctx.font = "24px Arial";
+        ctx.fillText("Score: " + playerScore, 548, 24);
+        ctx.fillText("Speed: " + backgroundSpeed, 548, 54);
+        ctx.fillText("Deaths: " + deaths, 8, 54);
+        ctx.fillText("Highscore: " + highscore, 8, 24);
+        ctx.font = "46px Arial";
+        ctx.fillText("[PIXEL RUN]", 265, 42);
+      }
+
+    //SHOWS START SCREEN
+    function startScreen(){
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        ctx.drawImage(gameTitle, 0, 0, gameTitle.width, gameTitle.height, 0, 0, canvasWidth, canvasHeight);
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        //ctx.fillStyle = 'black';
+        //ctx.font = "60px Arial";
+        //ctx.fillText("PRESS [ENTER] TO START", canvasWidth / 40, canvasHeight / 1.75);
+      }
+
+    //SHOWS PAUSE SCREEN
+    function pauseScreen(){
+      ctx.fillStyle = "rgb(255, 255, 255)"
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      ctx.fillStyle = 'black';
+      //ctx.textAlign = "center";
+      ctx.font = "100px Arial";
+      ctx.fillText("P A U S E D", canvasWidth / 6.25, canvasHeight / 3);
+      ctx.font = "24px Arial";
+      ctx.fillText("YOUR SCORE: " + playerScore, canvasWidth / 2.8, canvasHeight / 1.5);
+      //ctx.filter = "blur(2px)"
+    }
+
+    //SHOWS DEATH SCREEN
+    function deathScreen(){
+      ctx.fillStyle = "rgb(255, 255, 255)"
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      ctx.fillStyle = 'black';
+      ctx.font = "60px Arial";
+      ctx.fillText("Y O U  D I E D", canvasWidth / 4.1, canvasHeight / 5);
+      ctx.font = "24px Arial";
+      ctx.fillText("YOUR SCORE: " + playerScore, canvasWidth / 2.8, canvasHeight / 2.5);
+      ctx.fillText("DEATHS: " + deaths, canvasWidth / 2.5, canvasHeight / 1.7);
+      ctx.fillText("PRESS [ENTER] TO RETRY", canvasWidth / 3.5, canvasHeight / 1.3);
+    }
+
+    //DRAWS EVERYTHING
+    function draw(){
+      if(start){
+        startScreen();
+        return;
+        }
+      if(paused){
+        pauseScreen();
+        return;
+      }
+      if(died){
+        deathScreen();
+        return;
+      }
+      ctx.filter = "none";
+      drawBackground();
+      drawPlayer();
+      drawObstacles();
+      if(mapSelected[1]){
+      bridgeMap2.show();
+      }
+      bridgeMap2.update();
+      checkCollisions();
+      addScore();
+      scoreboard();
+      difficulty();
+    }
+
+  </script>
+
+</body>
+</html>
